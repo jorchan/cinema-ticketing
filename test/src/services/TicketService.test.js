@@ -44,5 +44,30 @@ describe("TicketService", ()=>{
         })  
     })
 
+    describe("isTicketAmountValid", () =>{
+        test('return false if ticket amount is greater than 20', ()=>{
+            const ticketService = new TicketService();
+            const obj = {
+                tickets:{
+                  adult: 15,
+                  child: 5,
+                  infant: 1
+                }
+            }
+            expect(ticketService.isTicketAmountValid(obj)).toEqual(false);
+        })
+        test('return true if ticket amount is less than or equal to 20', ()=>{
+            const ticketService = new TicketService();
+            const obj = {
+                tickets:{
+                  adult: 2,
+                  child: 5,
+                  infant: 1
+                }
+            }
+            expect(ticketService.isTicketAmountValid(obj)).toEqual(true);
+        })
+    })
+
 
 });
