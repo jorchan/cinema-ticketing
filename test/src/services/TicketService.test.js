@@ -1,3 +1,4 @@
+import { obj } from "through2-map";
 import InvalidPurchaseException from "../../../src/services/lib/InvalidPurchaseException";
 import TicketService from "../../../src/services/TicketService";
 
@@ -23,7 +24,7 @@ describe("TicketService", ()=>{
     })
 
     describe("isTicketTypesValid", ()=>{
-        test('return an false if passed an empty ticket type',() =>{
+        test('return a false if passed an empty ticket type',() =>{
             const ticketService = new TicketService();
             const obj = {
                 tickets:{
@@ -32,7 +33,7 @@ describe("TicketService", ()=>{
             
             expect(ticketService.isTicketTypesValid(obj)).toEqual(false);
         })  
-        test('return an error if passed a incorrect ticket type',() =>{
+        test('return false if passed a incorrect ticket type',() =>{
             const ticketService = new TicketService();
             const obj = {
                 tickets:{
@@ -41,6 +42,18 @@ describe("TicketService", ()=>{
               }
             
             expect(ticketService.isTicketTypesValid(obj)).toEqual(false);
+        })  
+        test('return true if ticketTypes are valid',() =>{
+            const ticketService = new TicketService();
+            const obj = {
+                tickets:{
+                    "adult": 1,
+                    "child": 0,
+                    "infant": null
+                }
+              }
+            
+            expect(ticketService.isTicketTypesValid(obj)).toEqual(true);
         })  
     })
 
@@ -61,7 +74,7 @@ describe("TicketService", ()=>{
             const obj = {
                 tickets:{
                   adult: 2,
-                  child: 5,
+                  child: null,
                   infant: 1
                 }
             }
@@ -69,5 +82,24 @@ describe("TicketService", ()=>{
         })
     })
 
+    describe("isAdultTicketPurchased", () =>{
+        test('if Adult ticket has been purchased, return true',() =>{
+            const ticketService = new TicketService();
+            const obj = {
+                adult:1,
+                child:1,
+                infant:1
+            }
+            expect(ticketService.isAdultTicketPurchased(obj)).toEqual(true);
+        });
 
+        test('if Adult ticket has not been purchased, return false',() =>{
+            const ticketService = new TicketService();
+            const obj = {
+                child:1,
+                infant:1
+            }
+            expect(ticketService.isAdultTicketPurchased(obj)).toEqual(false);
+        });
+    });
 });

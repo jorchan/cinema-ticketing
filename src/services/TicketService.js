@@ -26,6 +26,14 @@ export default class TicketService {
     return isKeysValid
   }
 
+  isAdultTicketPurchased(ticketTypeRequestObj){
+    if('adult' in ticketTypeRequestObj){
+      return true
+    }else{
+      return false
+    }
+  }
+
   isTicketAmountValid(ticketTypeRequestObj){
     const ticketValues = Object.values(ticketTypeRequestObj.tickets)
     const sumOfTickets = ticketValues.reduce((acc,curr) => acc + curr,0);
