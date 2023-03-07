@@ -46,8 +46,8 @@ export default class TicketService {
     }
   }
 
-  isTicketAmountValid(ticketTypeRequestObj){
-    const ticketValues = Object.values(ticketTypeRequestObj.tickets)
+  isTicketAmountValid(ticketTypeObj){
+    const ticketValues = Object.values(ticketTypeObj)
     const sumOfTickets = ticketValues.reduce((acc,curr) => acc + curr,0);
     
     if(sumOfTickets > 20){
