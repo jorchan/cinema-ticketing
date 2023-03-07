@@ -9,6 +9,9 @@ export default class TicketService {
   purchaseTickets(accountId, ticketTypeRequestObj) {
     const obj = 
     {
+      accountInfo:{
+        id: 1,
+      },
       tickets:{
         adult: 1,
         child: 1,
@@ -18,16 +21,25 @@ export default class TicketService {
    
   }
 
-  isTicketTypesValid(ticketTypeRequestObj){
+
+  isAccountIdValid(id){
+    if(id < 1){
+      return false
+    }else{
+      return true
+    }
+  }
+
+  isTicketTypesValid(ticketTypeObj){
     const requiredKeys = ['adult', 'child', 'infant'];
-    const ticketTypes = Object.keys(ticketTypeRequestObj.tickets)
+    const ticketTypes = Object.keys(ticketTypeObj)
     const isKeysValid = ticketTypes.length > 0 && ticketTypes.every(key => requiredKeys.includes(key));
 
     return isKeysValid
   }
 
-  isAdultTicketPurchased(ticketTypeRequestObj){
-    if('adult' in ticketTypeRequestObj){
+  isAdultTicketPurchased(ticketTypeObj){
+    if('adult' in ticketTypeObj){
       return true
     }else{
       return false

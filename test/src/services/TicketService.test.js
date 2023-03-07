@@ -1,4 +1,3 @@
-import { obj } from "through2-map";
 import InvalidPurchaseException from "../../../src/services/lib/InvalidPurchaseException";
 import TicketService from "../../../src/services/TicketService";
 
@@ -23,37 +22,61 @@ describe("TicketService", ()=>{
         })  
     })
 
+    describe("isAccountIdValid",() =>{
+        test('if account id is less than 1 then return false',()=>{
+            const ticketService = new TicketService();
+            expect(ticketService.isAccountIdValid(0)).toEqual(false);
+        })
+
+        test('if account id is more than or equal to 1 then return true',()=>{
+            const ticketService = new TicketService();
+            expect(ticketService.isAccountIdValid(1)).toEqual(true);
+        })
+    })
+
     describe("isTicketTypesValid", ()=>{
         test('return a false if passed an empty ticket type',() =>{
             const ticketService = new TicketService();
-            const obj = {
-                tickets:{
-                }
-              }
+            const obj = 
+            {
+            accountInfo:{
+                id: 1
+            },
+            tickets:{
+            }
+            }
             
-            expect(ticketService.isTicketTypesValid(obj)).toEqual(false);
+            expect(ticketService.isTicketTypesValid(obj.tickets)).toEqual(false);
         })  
         test('return false if passed a incorrect ticket type',() =>{
             const ticketService = new TicketService();
-            const obj = {
-                tickets:{
-                    "incorrectType": 1
-                }
-              }
+            const obj = 
+            {
+            accountInfo:{
+                id: 1
+            },
+            tickets:{
+                incorrectType: 1
+            }
+            }
             
-            expect(ticketService.isTicketTypesValid(obj)).toEqual(false);
+            expect(ticketService.isTicketTypesValid(obj.tickets)).toEqual(false);
         })  
         test('return true if ticketTypes are valid',() =>{
             const ticketService = new TicketService();
-            const obj = {
+            const obj =
+            {
+                accountInfo:{
+                    id:1
+                },
                 tickets:{
-                    "adult": 1,
-                    "child": 0,
-                    "infant": null
+                    adult: 1,
+                    child: 0,
+                    infant: null
                 }
-              }
+            }
             
-            expect(ticketService.isTicketTypesValid(obj)).toEqual(true);
+            expect(ticketService.isTicketTypesValid(obj.tickets)).toEqual(true);
         })  
     })
 
@@ -85,21 +108,33 @@ describe("TicketService", ()=>{
     describe("isAdultTicketPurchased", () =>{
         test('if Adult ticket has been purchased, return true',() =>{
             const ticketService = new TicketService();
-            const obj = {
-                adult:1,
-                child:1,
-                infant:1
+            const obj = 
+            {
+            accountInfo:{
+                id: 1,
+            },
+            tickets:{
+                adult: 1,
+                child: 1,
+                infant: 1
             }
-            expect(ticketService.isAdultTicketPurchased(obj)).toEqual(true);
+            }
+            expect(ticketService.isAdultTicketPurchased(obj.tickets)).toEqual(true);
         });
 
         test('if Adult ticket has not been purchased, return false',() =>{
             const ticketService = new TicketService();
-            const obj = {
-                child:1,
-                infant:1
+            const obj = 
+            {
+            accountInfo:{
+                id: 1,
+            },
+            tickets:{
+                child: 1,
+                infant: 1
             }
-            expect(ticketService.isAdultTicketPurchased(obj)).toEqual(false);
+            }
+            expect(ticketService.isAdultTicketPurchased(obj.tickets)).toEqual(false);
         });
     });
 });
