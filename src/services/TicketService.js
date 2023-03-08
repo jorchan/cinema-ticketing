@@ -6,9 +6,9 @@ export default class TicketService {
    * Should only have private methods other than the one below.
    */
   
-  purchaseTickets(accountId, ticketTypeRequestObj) {
-    const obj = 
-    {
+  // CONTROLLER 
+  /*
+   {
       accountInfo:{
         id: 1,
       },
@@ -18,42 +18,76 @@ export default class TicketService {
         infant: 1
       }
     }
-   
+    
+    ---> [new TicketTypeRequest]
+  */
+
+    //SERVICE 
+  /* [new TicketTypeRequest]
+
+    validate number of seats, number of tickets, ticket prices, return response
+    HTTP 200
+    {
+      success: true,
+      ticketsPurchased: 8
+      totalPrice: 3io
+    }
+  */
+
+
+  purchaseTickets(accountId, ...ticketTypeRequests) {
+
+// |   Ticket Type    |     Price   |
+// | ---------------- | ----------- |
+// |    INFANT        |    £0       |
+// |    CHILD         |    £10      |
+// |    ADULT         |    £20      |
+    const ticketPrices={
+      adult: 20,
+      child: 10,
+      infant: 0
+    }
+
+    
+    
+    if (this.isAccountIdValid(accountId) === false){
+      return "Account Id is invalid"
+    }
+    if (this.isTicketTypesValid(purchaseRequest.tickets) === false){
+      return "No valid ticket type found"
+    }
+    if (this.isAdultTicketPurchased(purchaseRequest.tickets) === false){
+      return "No Adult ticket purchased"
+    }
+    if (this.isTicketAmountValid(purchaseRequest.tickets) === false){
+      return "Ticket amount invalid"
+    }
   }
 
+  createTicketTypeRequest(purchaseRequest){
+    const ticketsPurchased = Object.entries(purchaseRequest.tickets);
+    const ticketTypeRequestArr = ticketsPurchased.map(([type,noOfTickets]) => new TicketTypeRequest(type,noOfTickets))
+    
+   return ticketTypeRequestArr
+  }
 
   isAccountIdValid(id){
-    if(id < 1){
-      return false
-    }else{
-      return true
-    }
+    return !(id < 1)
   }
 
-  isTicketTypesValid(ticketTypeObj){
-    const requiredKeys = ['adult', 'child', 'infant'];
-    const ticketTypes = Object.keys(ticketTypeObj)
-    const isKeysValid = ticketTypes.length > 0 && ticketTypes.every(key => requiredKeys.includes(key));
-
-    return isKeysValid
+  calculateSeatReserved(ticketTypeObj){
+    return ticketTypeObj?.ADULT + ticketTypeObj?.CHILD
   }
 
-  isAdultTicketPurchased(ticketTypeObj){
-    if('adult' in ticketTypeObj){
-      return true
-    }else{
-      return false
-    }
+  isAdultTicketPurchased(ticketTypeRequests){
+    const isAdultAvail = ticketTypeRequests.some(item => item.getTicketType() === 'ADULT' && item.getNoOfTickets() > 0)
+    return isAdultAvail
   }
 
   isTicketAmountValid(ticketTypeObj){
     const ticketValues = Object.values(ticketTypeObj)
     const sumOfTickets = ticketValues.reduce((acc,curr) => acc + curr,0);
     
-    if(sumOfTickets > 20){
-      return false
-    }else{
-      return true
-    }
+    return !(sumOfTickets > 20 || sumOfTickets === 0)
   }
 }
