@@ -65,23 +65,25 @@ describe("TicketService", ()=>{
             const arr = [new TicketTypeRequest('ADULT', -9), new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 2)]
             expect(ticketService.isAdultTicketPurchased(arr)).toEqual(false);
         });
+
+        test('if ADULT ticket is not in payload, return false',() =>{
+            const ticketService = new TicketService();
+            const arr = [ new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 2)]
+            expect(ticketService.isAdultTicketPurchased(arr)).toEqual(false);
+        });
     });
 
     describe("calculateSeatReserved",() =>{
-        test('return total seats for ADULT and CHILD, excluding INFANTs',()=>{
+        test('return total seats for ADULT and CHILD, excluding INFANT',()=>{
             const ticketService = new TicketService();
-            const obj = 
-            {
-            accountInfo:{
-                id: 1,
-            },
-            tickets:{
-                ADULT: 2,
-                CHILD: 2,
-                INFANT: 2
-            }
-            }
-            expect(ticketService.calculateSeatReserved(obj.tickets)).toEqual(4)
+            const arr = [new TicketTypeRequest('ADULT', 2), new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 2)]
+            expect(ticketService.calculateSeatReserved(arr)).toEqual(4)
+        })
+
+        test('return total seats for ADULT, excluding INFANT',()=>{
+            const ticketService = new TicketService();
+            const arr = [new TicketTypeRequest('ADULT', 2), new TicketTypeRequest('INFANT', 2)]
+            expect(ticketService.calculateSeatReserved(arr)).toEqual(2)
         })
     })
 
@@ -99,8 +101,6 @@ describe("TicketService", ()=>{
                 INFANT: 2
             }
             }
-
-            const expected = [new TicketTypeRequest('ADULT', 2), new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 2)]
             
             expect(ticketService.createTicketTypeRequest(obj)[0].getTicketType()).toEqual('ADULT')
             expect(ticketService.createTicketTypeRequest(obj)[0].getNoOfTickets()).toEqual(2)
@@ -110,6 +110,22 @@ describe("TicketService", ()=>{
             
             expect(ticketService.createTicketTypeRequest(obj)[2].getTicketType()).toEqual('INFANT')
             expect(ticketService.createTicketTypeRequest(obj)[2].getNoOfTickets()).toEqual(2)
+        })
+
+        test('return new ticket type request array from payload object of just ADULT',() =>{
+            const ticketService = new TicketService();
+            const obj = 
+            {
+            accountInfo:{
+                id: 1,
+            },
+            tickets:{
+                ADULT: 2
+            }
+            }
+            
+            expect(ticketService.createTicketTypeRequest(obj)[0].getTicketType()).toEqual('ADULT')
+            expect(ticketService.createTicketTypeRequest(obj)[0].getNoOfTickets()).toEqual(2)
         })
     })
 });

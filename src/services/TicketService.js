@@ -35,7 +35,7 @@ export default class TicketService {
   */
 
 
-  purchaseTickets(accountId, ...ticketTypeRequests) {
+  purchaseTickets(accountId, ticketTypeRequests) {
 
 // |   Ticket Type    |     Price   |
 // | ---------------- | ----------- |
@@ -47,25 +47,25 @@ export default class TicketService {
       child: 10,
       infant: 0
     }
-
-    
-    
+  
     if (this.isAccountIdValid(accountId) === false){
-      return "Account Id is invalid"
+      throw new InvalidPurchaseException("Account Id is invalid") 
     }
-    if (this.isTicketTypesValid(purchaseRequest.tickets) === false){
-      return "No valid ticket type found"
+    if (this.isTicketTypesValid(ticketTypeRequests) === false){
+      throw new InvalidPurchaseException("No valid ticket type found")
     }
-    if (this.isAdultTicketPurchased(purchaseRequest.tickets) === false){
-      return "No Adult ticket purchased"
+
+    if (this.isAdultTicketPurchased(ticketTypeRequests) === false){
+      throw new InvalidPurchaseException("No Adult ticket purchased")
     }
-    if (this.isTicketAmountValid(purchaseRequest.tickets) === false){
-      return "Ticket amount invalid"
+    if (this.isTicketAmountValid(ticketTypeRequests) === false){
+      throw new InvalidPurchaseException("Ticket amount invalid")
     }
+ 
   }
 
-  createTicketTypeRequest(purchaseRequest){
-    const ticketsPurchased = Object.entries(purchaseRequest.tickets);
+  createTicketTypeRequest(purchaseRequestObj){
+    const ticketsPurchased = Object.entries(purchaseRequestObj.tickets);
     const ticketTypeRequestArr = ticketsPurchased.map(([type,noOfTickets]) => new TicketTypeRequest(type,noOfTickets))
     
    return ticketTypeRequestArr
@@ -75,8 +75,15 @@ export default class TicketService {
     return !(id < 1)
   }
 
-  calculateSeatReserved(ticketTypeObj){
-    return ticketTypeObj?.ADULT + ticketTypeObj?.CHILD
+  calculateSeatReserved(ticketTypeRequests){
+    const calculatedSeats = ticketTypeRequests.reduce((acc,curr) => {
+      if(curr.getTicketType() ==='INFANT'){
+        return acc
+      }else{
+        return acc + curr.getNoOfTickets()
+      }}, 0);
+      
+    return calculatedSeats
   }
 
   isAdultTicketPurchased(ticketTypeRequests){
