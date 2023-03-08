@@ -38,52 +38,25 @@ describe("TicketService", ()=>{
     describe("isTicketAmountValid", () =>{
         test('return false if ticket amount is greater than 20', ()=>{
             const ticketService = new TicketService();
-            const obj = {
-            accountInfo:{
-                id: 1,
-            },
-                tickets:{
-                  ADULT: 15,
-                  CHILD: 5,
-                  INFANT: 1
-                }
-            }
-            expect(ticketService.isTicketAmountValid(obj.tickets)).toEqual(false);
+            const arr = [new TicketTypeRequest('ADULT', 20), new TicketTypeRequest('CHILD', 0), new TicketTypeRequest('INFANT', 2)]
+            expect(ticketService.isTicketAmountValid(arr)).toEqual(false);
         })
         test('return true if ticket amount is less than or equal to 20', ()=>{
             const ticketService = new TicketService();
-            const obj = {
-            accountInfo:{
-                id: 1,
-            },
-                tickets:{
-                  ADULT: 2,
-                  CHILD: null,
-                  INFANT: 1
-                }
-            }
-            expect(ticketService.isTicketAmountValid(obj.tickets)).toEqual(true);
+            const arr = [new TicketTypeRequest('ADULT', 2), new TicketTypeRequest('CHILD', 0), new TicketTypeRequest('INFANT', 2)]
+            expect(ticketService.isTicketAmountValid(arr)).toEqual(true);
         })
         test('return false if ticket amount is 0',() =>{
             const ticketService = new TicketService();
-            const obj = {
-            accountInfo:{
-                id: 1,
-            },
-                tickets:{
-                  ADULT: 0,
-                  CHILD: 0,
-                  INFANT: 0
-                }
-            }
-            expect(ticketService.isTicketAmountValid(obj.tickets)).toEqual(false)
+            const arr = [new TicketTypeRequest('ADULT', 0), new TicketTypeRequest('CHILD', 0), new TicketTypeRequest('INFANT', 0)]
+            expect(ticketService.isTicketAmountValid(arr)).toEqual(false)
         })
     })
 
     describe("is ADULT TicketPurchased", () =>{
         test('if ADULT ticket has been purchased, return true',() =>{
             const ticketService = new TicketService();
-            const arr = [new TicketTypeRequest('ADULT', 2), new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 2)]
+            const arr = [new TicketTypeRequest('ADULT', 2), new TicketTypeRequest('CHILD', 0), new TicketTypeRequest('INFANT', 2)]
             expect(ticketService.isAdultTicketPurchased(arr)).toEqual(true);
         });
 
@@ -95,7 +68,7 @@ describe("TicketService", ()=>{
     });
 
     describe("calculateSeatReserved",() =>{
-        test('return total seats for ADULT and CHILDren, excluding INFANTs',()=>{
+        test('return total seats for ADULT and CHILD, excluding INFANTs',()=>{
             const ticketService = new TicketService();
             const obj = 
             {
