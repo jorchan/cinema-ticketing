@@ -107,16 +107,30 @@ describe("TicketService", ()=>{
     });
 
     describe("calculateSeatReserved",() =>{
-        test('return total seats for ADULT and CHILD, excluding INFANT',()=>{
+        test('return total seats for ADULT and CHILD,should be excluding INFANT',()=>{
             const ticketService = new TicketService();
             const arr = [new TicketTypeRequest('ADULT', 2), new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 2)]
-            expect(ticketService.calculateSeatReserved(arr)).toEqual(4)
+            expect(ticketService.calculateSeatsReserved(arr)).toEqual(4)
         })
 
-        test('return total seats for ADULT, excluding INFANT',()=>{
+        test('return total seats for ADULT,should be excluding INFANT',()=>{
             const ticketService = new TicketService();
             const arr = [new TicketTypeRequest('ADULT', 2), new TicketTypeRequest('INFANT', 2)]
-            expect(ticketService.calculateSeatReserved(arr)).toEqual(2)
+            expect(ticketService.calculateSeatsReserved(arr)).toEqual(2)
+        })
+    })
+
+    describe("calculateTicketPrice",()=>{
+        test('return total ticket price for ADULT and CHILD,should be excluding INFANT',() =>{
+            const ticketService = new TicketService();
+            const arr = [new TicketTypeRequest('ADULT', 2), new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 2)]
+            expect(ticketService.calculateTicketPrice(arr)).toEqual(60)
+        })
+
+        test('return total ticket price for ADULT',() =>{
+            const ticketService = new TicketService();
+            const arr = [new TicketTypeRequest('ADULT', 2)]
+            expect(ticketService.calculateTicketPrice(arr)).toEqual(40)
         })
     })
 

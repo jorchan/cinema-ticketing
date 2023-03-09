@@ -1,5 +1,6 @@
 import TicketTypeRequest from './lib/TicketTypeRequest.js';
 import InvalidPurchaseException from './lib/InvalidPurchaseException.js';
+import { getTicketPrices } from '../models/TicketsModel.js';
 
 export default class TicketService {
   /**
@@ -47,7 +48,7 @@ export default class TicketService {
       child: 10,
       infant: 0
     }
-  
+    
     if (this.isAccountIdValid(accountId) === false){
       throw new InvalidPurchaseException("Account Id is invalid") 
     }
@@ -58,8 +59,8 @@ export default class TicketService {
       throw new InvalidPurchaseException("No Adult ticket purchased")
     }
 
-    console.log(ticketTypeRequests)
- 
+    const totalSeatsResevered = this.calculateSeatsReserved(ticketTypeRequests)
+    
   }
 
   createTicketTypeRequest(purchaseRequestObj){
@@ -73,7 +74,7 @@ export default class TicketService {
     return !(id < 1)
   }
 
-  calculateSeatReserved(ticketTypeRequests){
+  calculateSeatsReserved(ticketTypeRequests){
     const calculatedSeats = ticketTypeRequests.reduce((acc,curr) => {
       if(curr.getTicketType() ==='INFANT'){
         return acc
@@ -82,6 +83,26 @@ export default class TicketService {
       }}, 0);
       
     return calculatedSeats
+  }
+
+  calculateTicketPrice(ticketTypeRequests){
+    const ticketPrices={
+      adult: 20,
+      child: 10,
+      infant: 0
+    }
+    const calculatedTicketPrice = ticketTypeRequests.reduce((acc,curr) => {
+      switch(curr.getTicketType()){
+        case 'CHILD':
+          return acc+(ticketPrices.child*curr.getNoOfTickets())
+          break;
+        case 'ADULT':
+          return acc+(ticketPrices.adult*curr.getNoOfTickets())
+          break;
+        default:
+          return acc
+      }}, 0);
+      return calculatedTicketPrice
   }
 
   isAdultTicketPurchased(ticketTypeRequests){
