@@ -86,23 +86,8 @@ export default class TicketService {
   }
 
   calculateTicketPrice(ticketTypeRequests){
-    const ticketPrices={
-      adult: 20,
-      child: 10,
-      infant: 0
-    }
-    const calculatedTicketPrice = ticketTypeRequests.reduce((acc,curr) => {
-      switch(curr.getTicketType()){
-        case 'CHILD':
-          return acc+(ticketPrices.child*curr.getNoOfTickets())
-          break;
-        case 'ADULT':
-          return acc+(ticketPrices.adult*curr.getNoOfTickets())
-          break;
-        default:
-          return acc
-      }}, 0);
-      return calculatedTicketPrice
+    const calculatedTicketPrice = ticketTypeRequests.reduce((acc,curr) => acc + (curr.getNoOfTickets() * getTicketPrices(curr.getTicketType())), 0);
+    return calculatedTicketPrice
   }
 
   isAdultTicketPurchased(ticketTypeRequests){
