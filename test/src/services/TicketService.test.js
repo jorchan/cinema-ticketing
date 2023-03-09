@@ -1,6 +1,13 @@
-import InvalidPurchaseException from "../../../src/services/lib/InvalidPurchaseException";
-import TicketService from "../../../src/services/TicketService";
-import TicketTypeRequest from "../../../src/services/lib/TicketTypeRequest";
+import { jest } from '@jest/globals';
+import InvalidPurchaseException from "../../../src/services/lib/InvalidPurchaseException.js";
+import TicketService from "../../../src/services/TicketService.js";
+import TicketTypeRequest from "../../../src/services/lib/TicketTypeRequest.js";
+import TicketPaymentService from "../../../src/thirdparty/paymentgateway/TicketPaymentService.js";
+import SeatReservationService from "../../../src/thirdparty/seatbooking/SeatReservationService.js";
+
+jest.mock('../../../src/thirdparty/paymentgateway/TicketPaymentService.js')
+jest.mock('../../../src/thirdparty/seatbooking/SeatReservationService.js')
+
 
 describe("TicketService", ()=>{
     describe("purchaseTickets", ()=>{
@@ -53,7 +60,53 @@ describe("TicketService", ()=>{
                 expect(err).toBeInstanceOf(InvalidPurchaseException)
                 expect(err.message).toEqual("Ticket amount invalid")
             }  
-        })  
+        })
+        //3rd party errors
+        test('should handle errors from makePayment',()=>{
+            const ticketService = new TicketService();
+
+            const makePaymentSpy = jest.spyOn(TicketPaymentService.prototype,'makePayment').mockImplementationOnce(()=>{
+                throw new Error('payment failed')
+            });
+            const arr = [new TicketTypeRequest('ADULT', 2),new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 2)]
+            const expectedObj={
+                totalPrice: 60,
+                totalSeatsReserved: 4
+            }
+            try{
+                ticketService.purchaseTickets(1,arr)
+            }catch(err){
+                expect(err.status).toEqual(500)
+                expect(err.message).toEqual("Internal error, payment failed")
+            }
+            expect(makePaymentSpy).toHaveBeenCalledTimes(1)
+        })
+
+        test('should handle errors from reserveSeat',()=>{
+            const ticketService = new TicketService()
+            const reserveSeatSpy = jest.spyOn(SeatReservationService.prototype,'reserveSeat').mockImplementationOnce(()=>{
+                throw new Error ("ticket service failed!")
+            })
+            const arr = [new TicketTypeRequest('ADULT', 2),new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 2)]
+            try{
+                ticketService.purchaseTickets(1,arr)
+            }catch(err){
+                expect(err.status).toEqual(500)
+                expect(err.message).toEqual("Internal error, seat reservation failed")
+            }
+            expect(reserveSeatSpy).toHaveBeenCalledTimes(1)
+        })
+         
+        test('on success return an object with total price and seats reserved back',() =>{
+            const ticketService = new TicketService();
+            const arr = [new TicketTypeRequest('ADULT', 2),new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 2)]
+            const expectedObj={
+                totalPrice: 60,
+                totalSeatsReserved: 4
+            }
+            expect(ticketService.purchaseTickets(1,arr)).toMatchObject(expectedObj)
+        }) 
+
     })
 
     describe("isAccountIdValid",() =>{

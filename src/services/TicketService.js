@@ -1,4 +1,6 @@
 import TicketTypeRequest from './lib/TicketTypeRequest.js';
+import SeatReservationService from '../thirdparty/seatbooking/SeatReservationService.js';
+import TicketPaymentService from '../thirdparty/paymentgateway/TicketPaymentService.js';
 import InvalidPurchaseException from './lib/InvalidPurchaseException.js';
 import { getTicketPrices } from '../models/TicketModel.js';
 
@@ -37,18 +39,6 @@ export default class TicketService {
 
 
   purchaseTickets(accountId, ticketTypeRequests) {
-
-// |   Ticket Type    |     Price   |
-// | ---------------- | ----------- |
-// |    INFANT        |    £0       |
-// |    CHILD         |    £10      |
-// |    ADULT         |    £20      |
-    const ticketPrices={
-      adult: 20,
-      child: 10,
-      infant: 0
-    }
-    
     if (this.isAccountIdValid(accountId) === false){
       throw new InvalidPurchaseException("Account Id is invalid") 
     }
@@ -59,8 +49,32 @@ export default class TicketService {
       throw new InvalidPurchaseException("No Adult ticket purchased")
     }
 
-    const totalSeatsResevered = this.calculateSeatsReserved(ticketTypeRequests)
+    const totalPurchasePrice = this.calculateTicketPrice(ticketTypeRequests);
+    const ticketPaymentService = new TicketPaymentService();
     
+    const totalSeatsToReserve = this.calculateSeatsReserved(ticketTypeRequests);
+    const seatReservationService = new SeatReservationService();
+
+    try{
+      ticketPaymentService.makePayment(accountId,totalPurchasePrice);
+    }catch{
+      const error = new Error ('Internal error, payment failed')
+      error.status = 500
+      throw error
+    }
+
+    try{
+      seatReservationService.reserveSeat(accountId,totalSeatsToReserve);
+    }catch{
+      const error = new Error ('Internal error, seat reservation failed')
+      error.status = 500
+      throw error
+    }
+    
+    return {
+      totalPrice: totalPurchasePrice,
+      totalSeatsReserved: totalSeatsToReserve
+    }
   }
 
   createTicketTypeRequest(purchaseRequestObj){
