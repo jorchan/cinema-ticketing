@@ -1,6 +1,6 @@
 import TicketTypeRequest from './lib/TicketTypeRequest.js';
 import InvalidPurchaseException from './lib/InvalidPurchaseException.js';
-import { getTicketPrices } from '../models/TicketsModel.js';
+import { getTicketPrices } from '../models/TicketModel.js';
 
 export default class TicketService {
   /**
