@@ -5,39 +5,6 @@ import InvalidPurchaseException from './lib/InvalidPurchaseException.js';
 import { getTicketPrices } from '../models/TicketModel.js';
 
 export default class TicketService {
-  /**
-   * Should only have private methods other than the one below.
-   */
-  
-  // CONTROLLER 
-  /*
-   {
-      accountInfo:{
-        id: 1,
-      },
-      tickets:{
-        adult: 1,
-        child: 1,
-        infant: 1
-      }
-    }
-    
-    ---> [new TicketTypeRequest]
-  */
-
-    //SERVICE 
-  /* [new TicketTypeRequest]
-
-    validate number of seats, number of tickets, ticket prices, return response
-    HTTP 200
-    {
-      success: true,
-      ticketsPurchased: 8
-      totalPrice: 3io
-    }
-  */
-
-
   purchaseTickets(accountId, ticketTypeRequests) {
     if (this.isAccountIdValid(accountId) === false){
       throw new InvalidPurchaseException("Account Id is invalid") 
