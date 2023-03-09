@@ -4,21 +4,54 @@ import TicketTypeRequest from "../../../src/services/lib/TicketTypeRequest";
 
 describe("TicketService", ()=>{
     describe("purchaseTickets", ()=>{
-        xtest('return an error if passed a unsupported ticket type',() =>{
+        test('return an error if passed an invalid account id',() =>{
             const ticketService = new TicketService();
-            const obj = {
-                tickets:{
-                  ADULT: 1,
-                  CHILD: 1,
-                  INFANT: 1
-                }
-              }
-
+            const arr = [new TicketTypeRequest('ADULT', 2), new TicketTypeRequest('CHILD', 0), new TicketTypeRequest('INFANT', 2)]
             try{
-                ticketService.purchaseTickets(1,obj)
+                ticketService.purchaseTickets(0,arr)
             }catch(err){
                 expect(err).toBeInstanceOf(InvalidPurchaseException)
-                expect(err.message).toEqual("ticket type is not valid")
+                expect(err.message).toEqual("Account Id is invalid")
+            }  
+        })  
+        test('return an error if no ADULT ticket has been purchased',() =>{
+            const ticketService = new TicketService();
+            const arr = [new TicketTypeRequest('ADULT', 0),new TicketTypeRequest('CHILD', 0), new TicketTypeRequest('INFANT', 2)]
+            try{
+                ticketService.purchaseTickets(1,arr)
+            }catch(err){
+                expect(err).toBeInstanceOf(InvalidPurchaseException)
+                expect(err.message).toEqual("No Adult ticket purchased")
+            }  
+        })  
+        test('return an error if no ADULT ticket has been passed in the payload',() =>{
+            const ticketService = new TicketService();
+            const arr = [new TicketTypeRequest('CHILD', 0), new TicketTypeRequest('INFANT', 2)]
+            try{
+                ticketService.purchaseTickets(1,arr)
+            }catch(err){
+                expect(err).toBeInstanceOf(InvalidPurchaseException)
+                expect(err.message).toEqual("No Adult ticket purchased")
+            }  
+        })  
+        test('return an error if over 20 tickets purchased',() =>{
+            const ticketService = new TicketService();
+            const arr = [new TicketTypeRequest('ADULT', 15),new TicketTypeRequest('CHILD', 5), new TicketTypeRequest('INFANT', 2)]
+            try{
+                ticketService.purchaseTickets(1,arr)
+            }catch(err){
+                expect(err).toBeInstanceOf(InvalidPurchaseException)
+                expect(err.message).toEqual("Ticket amount invalid")
+            }  
+        })  
+        test('return an error if no tickets purchased',() =>{
+            const ticketService = new TicketService();
+            const arr = [new TicketTypeRequest('ADULT', 0),new TicketTypeRequest('CHILD', 0), new TicketTypeRequest('INFANT', 0)]
+            try{
+                ticketService.purchaseTickets(1,arr)
+            }catch(err){
+                expect(err).toBeInstanceOf(InvalidPurchaseException)
+                expect(err.message).toEqual("Ticket amount invalid")
             }  
         })  
     })

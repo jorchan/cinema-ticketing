@@ -51,16 +51,14 @@ export default class TicketService {
     if (this.isAccountIdValid(accountId) === false){
       throw new InvalidPurchaseException("Account Id is invalid") 
     }
-    if (this.isTicketTypesValid(ticketTypeRequests) === false){
-      throw new InvalidPurchaseException("No valid ticket type found")
-    }
-
-    if (this.isAdultTicketPurchased(ticketTypeRequests) === false){
-      throw new InvalidPurchaseException("No Adult ticket purchased")
-    }
     if (this.isTicketAmountValid(ticketTypeRequests) === false){
       throw new InvalidPurchaseException("Ticket amount invalid")
     }
+    if (this.isAdultTicketPurchased(ticketTypeRequests) === false){
+      throw new InvalidPurchaseException("No Adult ticket purchased")
+    }
+
+    console.log(ticketTypeRequests)
  
   }
 
