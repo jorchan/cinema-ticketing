@@ -1,0 +1,81 @@
+openapi: 3.0.0
+info:
+  title: cinema-tickets-javascript
+  description: cinema ticket booking service
+  version: 0.1.0
+
+servers:
+  - url: http://localhost:3000/
+
+paths:
+  /tickets:
+    post:
+      description: handles ticket purchase request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountInfo:
+                  type: object
+                  properties: 
+                    id:
+                      type: integer
+                tickets:
+                  type: object
+                  properties:
+                    ADULT:
+                      type: integer
+                    CHILD:
+                      type: integer
+                    INFANT:
+                      type: integer         
+      responses:
+        '200':
+          description: Successfully booked tickets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  totalPrice:
+                    type: integer
+                  totalSeatsReserved:
+                    type: integer
+                  ticketsPurchased:
+                    type: object
+                    properties:
+                      ADULT:
+                        type: integer
+                      CHILD:
+                        type: integer
+                      INFANT:
+                        type: integer
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+        '500':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  success:
+                    type: boolean
+                  status:
+                    type: integer
+                  message:
+                    type: string
+
+  

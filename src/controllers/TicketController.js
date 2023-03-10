@@ -30,6 +30,7 @@ export const purchaseTickets = ((req,res)=>{
             success: true,
             totalPrice: ticketServiceResponse.totalPrice,
             totalSeatsReserved: ticketServiceResponse.totalSeatsReserved,
+            ticketsPurchased: ticketServiceResponse.ticketTypesPurchased
         })
   
     }catch(err){

@@ -1,12 +1,12 @@
 import { jest } from '@jest/globals';
-import InvalidPurchaseException from "../../../src/services/lib/InvalidPurchaseException.js";
-import TicketService from "../../../src/services/TicketService.js";
-import TicketTypeRequest from "../../../src/services/lib/TicketTypeRequest.js";
-import TicketPaymentService from "../../../src/thirdparty/paymentgateway/TicketPaymentService.js";
-import SeatReservationService from "../../../src/thirdparty/seatbooking/SeatReservationService.js";
+import InvalidPurchaseException from '../../../../src/services/lib/InvalidPurchaseException.js';
+import TicketService from '../../../../src/services/TicketService.js';
+import TicketTypeRequest from '../../../../src/services/lib/TicketTypeRequest.js';
+import TicketPaymentService from '../../../../src/thirdparty/paymentgateway/TicketPaymentService.js';
+import SeatReservationService from '../../../../src/thirdparty/seatbooking/SeatReservationService.js';
 
-jest.mock('../../../src/thirdparty/paymentgateway/TicketPaymentService.js')
-jest.mock('../../../src/thirdparty/seatbooking/SeatReservationService.js')
+jest.mock('../../../../src/thirdparty/paymentgateway/TicketPaymentService.js')
+jest.mock('../../../../src/thirdparty/seatbooking/SeatReservationService.js')
 
 
 describe("TicketService", ()=>{

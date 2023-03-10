@@ -7,6 +7,6 @@ router.get('/', (req,res)=>{
     res.send("hello world!");
 });
 
-router.post('/purchaseTickets',purchaseTickets);
+router.post('/tickets',purchaseTickets);
 
 export default router;

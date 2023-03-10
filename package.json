@@ -17,9 +17,12 @@
   "dependencies": {
     "express": "^4.18.2",
     "nodemon": "^2.0.21",
-    "router": "^1.3.8"
+    "router": "^1.3.8",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.2",
+    "yamljs": "^0.3.0"
   },
-  "jest":{
+  "jest": {
     "transform": {}
   }
 }

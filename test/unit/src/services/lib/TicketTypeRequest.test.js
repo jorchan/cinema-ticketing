@@ -1,4 +1,4 @@
-import TicketTypeRequest from "../../../../src/services/lib/TicketTypeRequest.js"
+import TicketTypeRequest from "../../../../../src/services/lib/TicketTypeRequest.js"
 
 describe("TicketTypeRequest",() =>{
     test('if noOftickets is not an int return an error',()=>{

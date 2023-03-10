@@ -1,8 +1,8 @@
 import {jest} from '@jest/globals'
-import { purchaseTickets } from "../../../src/controllers/TicketController.js";
-import TicketService from '../../../src/services/TicketService.js';
+import { purchaseTickets } from '../../../../src/controllers/TicketController.js';
+import TicketService from '../../../../src/services/TicketService.js';
 
-jest.mock('../../../src/services/TicketService.js')
+jest.mock('../../../../src/services/TicketService.js')
 
 describe("purchaseTickets",()=>{
     beforeEach(()=>{
@@ -97,9 +97,9 @@ describe("purchaseTickets",()=>{
                     id: 1,
                 },
                 tickets:{
-                    ADULT: 1,
-                    CHILD: 1,
-                    INFANT: 3
+                    ADULT: 2,
+                    CHILD: 2,
+                    INFANT: 2
                 }
             }
         }
@@ -113,6 +113,11 @@ describe("purchaseTickets",()=>{
             success: true,
             totalPrice: 60,
             totalSeatsReserved: 4,
+            ticketsPurchased:{
+                ADULT:2,
+                CHILD:2,
+                INFANT:2
+            }
         })
         
     })
