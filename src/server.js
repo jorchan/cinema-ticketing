@@ -15,6 +15,7 @@ app.use('/api-docs',
 swaggerUi.serve,
 swaggerUi.setup(swaggerDocument))
 
+
 app.listen(port, (error)=>{
     if(!error){
         console.log(`app running on ${port}`)
@@ -22,3 +23,5 @@ app.listen(port, (error)=>{
         console.log(error)
     }
 })
+
+export default app

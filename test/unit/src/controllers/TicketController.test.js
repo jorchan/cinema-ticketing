@@ -126,7 +126,11 @@ describe("purchaseTickets",()=>{
         const purchaseTicketsSpy = jest.spyOn(TicketService.prototype,'purchaseTickets').mockImplementationOnce(()=>{
             throw new Error("error")
         })
-
+        const expectedObj={
+            success:false,
+            status: 500,
+            message: "error"
+        }
         const mReq ={
             body: {
                 accountInfo:{
@@ -146,6 +150,38 @@ describe("purchaseTickets",()=>{
 
         purchaseTickets(mReq,mRes);
         expect(mRes.status).toHaveBeenCalledWith(500)  
+        expect(mRes.json).toHaveBeenCalledWith(expectedObj)
+    })
+
+    test('return default error message when there is an internal error without a error message',()=>{
+        const purchaseTicketsSpy = jest.spyOn(TicketService.prototype,'purchaseTickets').mockImplementationOnce(()=>{
+            throw new Error()
+        })
+        const expectedObj={
+            success:false,
+            status: 500,
+            message: "unkown error occured"
+        }
+        const mReq ={
+            body: {
+                accountInfo:{
+                    id: 1,
+                },
+                tickets:{
+                    ADULT: 1,
+                    CHILD: 1,
+                    INFANT: 3
+                }
+            }
+        }
+        const mRes ={}
+        mRes.send = jest.fn().mockReturnValue(mRes),
+        mRes.status = jest.fn().mockReturnValue(mRes),
+        mRes.json = jest.fn().mockReturnValue(mRes)
+
+        purchaseTickets(mReq,mRes);
+        expect(mRes.status).toHaveBeenCalledWith(500)  
+        expect(mRes.json).toHaveBeenCalledWith(expectedObj)
     })
    
 })

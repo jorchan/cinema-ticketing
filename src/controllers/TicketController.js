@@ -17,10 +17,18 @@ export const purchaseTickets = ((req,res)=>{
     const ticketsObj = req.body.tickets;
 
     if(!accountId){
-        return res.status(400).send('no account id included')
+        return res.status(400).json({
+            success:false,
+            status:400,
+            message: 'no account id included'
+        })
     }
     if(!ticketsObj || Object.keys(ticketsObj).length === 0){
-        return res.status(400).send('no tickets being purchased')
+        return res.status(400).json({
+            success:false,
+            status:400,
+            message: 'no tickets being purchased'
+        })
     }
     try{
         const ticketArr = ticketService.createTicketTypeRequest(ticketsObj);
@@ -40,7 +48,6 @@ export const purchaseTickets = ((req,res)=>{
             success:false,
             status,
             message
-
         })
     }
 
