@@ -10,6 +10,7 @@ jest.mock('../../../src/thirdparty/seatbooking/SeatReservationService.js')
 
 
 describe("TicketService", ()=>{
+
     describe("purchaseTickets", ()=>{
         test('return an error if passed an invalid account id',() =>{
             const ticketService = new TicketService();
@@ -102,7 +103,12 @@ describe("TicketService", ()=>{
             const arr = [new TicketTypeRequest('ADULT', 2),new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 2)]
             const expectedObj={
                 totalPrice: 60,
-                totalSeatsReserved: 4
+                totalSeatsReserved: 4,
+                ticketTypesPurchased: {
+                    ADULT:2,
+                    CHILD:2,
+                    INFANT:2
+                }
             }
             expect(ticketService.purchaseTickets(1,arr)).toMatchObject(expectedObj)
         }) 
@@ -226,6 +232,20 @@ describe("TicketService", ()=>{
             
             expect(ticketService.createTicketTypeRequest(obj)[0].getTicketType()).toEqual('ADULT')
             expect(ticketService.createTicketTypeRequest(obj)[0].getNoOfTickets()).toEqual(2)
+        })
+    })
+
+    describe("ticketTypesPurchased",()=>{
+        test('return the ticket types that were attempted to be purchased',()=>{
+            const ticketService = new TicketService();
+            const arr = [new TicketTypeRequest('ADULT', 1),new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 1)]
+            const expected ={
+                ADULT:1,
+                CHILD:2,
+                INFANT:1
+            }
+
+            expect(ticketService.ticketTypesPurchased(arr)).toMatchObject(expected)
         })
     })
 });

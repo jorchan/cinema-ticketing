@@ -37,10 +37,13 @@ export default class TicketService {
       error.status = 500
       throw error
     }
-    
+
+    const ticketTypesPurchased = this.ticketTypesPurchased(ticketTypeRequests);
+   
     return {
       totalPrice: totalPurchasePrice,
-      totalSeatsReserved: totalSeatsToReserve
+      totalSeatsReserved: totalSeatsToReserve,
+      ticketTypesPurchased: ticketTypesPurchased
     }
   }
 
@@ -80,4 +83,15 @@ export default class TicketService {
     const sumOfTickets = ticketTypeRequests.reduce((acc,curr) => acc + curr.getNoOfTickets(), 0)
     return !(sumOfTickets > 20 || sumOfTickets === 0)
   }
+
+  ticketTypesPurchased(ticketTypeRequests){
+    const ticketTypes = ticketTypeRequests.reduce((acc,curr)=>{ 
+      return{
+        ...acc,
+        [curr.getTicketType()]: curr.getNoOfTickets(),
+      };
+    },{});
+    return ticketTypes
+  }
+
 }

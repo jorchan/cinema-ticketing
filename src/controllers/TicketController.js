@@ -9,7 +9,10 @@ import TicketService from "../services/TicketService.js";
 //         INFANT: 2
 //     }
 // }
+const ticketService = new TicketService();
+
 export const purchaseTickets = ((req,res)=>{
+    
     const accountId = req.body.accountInfo?.id;
     const ticketsObj = req.body.tickets;
 
@@ -20,9 +23,17 @@ export const purchaseTickets = ((req,res)=>{
         res.status(400).send('no tickets being purchased')
     }
     try{
+        const ticketArr = ticketService.createTicketTypeRequest(ticketsObj);
+        const ticketServiceResponse = ticketService.purchaseTickets(accountId,ticketArr);
         
+        res.status(200).json({
+            success: true,
+            totalPrice: ticketServiceResponse.totalPrice,
+            totalSeatsReserved: ticketServiceResponse.totalSeatsReserved,
+        })
+  
     }catch(err){
-
+        res.status(500).send(err)
     }
 
 })
