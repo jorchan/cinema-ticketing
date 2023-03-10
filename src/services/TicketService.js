@@ -47,10 +47,9 @@ export default class TicketService {
     }
   }
 
-  createTicketTypeRequest(purchaseRequestObj){
-    const ticketsPurchased = Object.entries(purchaseRequestObj.tickets);
+  createTicketTypeRequest(purchaseRequestTicketTypeObj){
+    const ticketsPurchased = Object.entries(purchaseRequestTicketTypeObj);
     const ticketTypeRequestArr = ticketsPurchased.map(([type,noOfTickets]) => new TicketTypeRequest(type,noOfTickets))
-    
    return ticketTypeRequestArr
   }
 

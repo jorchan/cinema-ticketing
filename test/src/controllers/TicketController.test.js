@@ -26,11 +26,13 @@ describe("purchaseTickets",()=>{
         }
         const mRes ={}
         mRes.send = jest.fn().mockReturnValue(mRes),
-        mRes.status = jest.fn().mockReturnValue(mRes)
+        mRes.status = jest.fn().mockReturnValue(mRes),
+        mRes.json = jest.fn().mockReturnValue(mRes)
         
         purchaseTickets(mReq,mRes);
         expect(mRes.status).toHaveBeenCalledWith(400);
-        expect(mRes.send).toHaveBeenCalledWith("no account id included")
+        expect(mRes.send).toHaveBeenCalledWith("no account id included");
+        
     })
     test('return status 400 if no keys are found in the ticket object was given to controller',()=>{
        
@@ -45,7 +47,8 @@ describe("purchaseTickets",()=>{
         }
         const mRes ={}
         mRes.send = jest.fn().mockReturnValue(mRes),
-        mRes.status = jest.fn().mockReturnValue(mRes)
+        mRes.status = jest.fn().mockReturnValue(mRes),
+        mRes.json = jest.fn().mockReturnValue(mRes)
         
         purchaseTickets(mReq,mRes);
         expect(mRes.status).toHaveBeenCalledWith(400);
@@ -63,7 +66,8 @@ describe("purchaseTickets",()=>{
         }
         const mRes ={}
         mRes.send = jest.fn().mockReturnValue(mRes),
-        mRes.status = jest.fn().mockReturnValue(mRes)
+        mRes.status = jest.fn().mockReturnValue(mRes),
+        mRes.json = jest.fn().mockReturnValue(mRes)
         
         purchaseTickets(mReq,mRes);
         expect(mRes.status).toHaveBeenCalledWith(400);

@@ -198,14 +198,9 @@ describe("TicketService", ()=>{
             const ticketService = new TicketService();
             const obj = 
             {
-            accountInfo:{
-                id: 1,
-            },
-            tickets:{
                 ADULT: 2,
                 CHILD: 2,
                 INFANT: 2
-            }
             }
             
             expect(ticketService.createTicketTypeRequest(obj)[0].getTicketType()).toEqual('ADULT')
@@ -222,12 +217,7 @@ describe("TicketService", ()=>{
             const ticketService = new TicketService();
             const obj = 
             {
-            accountInfo:{
-                id: 1,
-            },
-            tickets:{
                 ADULT: 2
-            }
             }
             
             expect(ticketService.createTicketTypeRequest(obj)[0].getTicketType()).toEqual('ADULT')
