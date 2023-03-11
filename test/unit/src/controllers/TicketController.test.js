@@ -11,7 +11,11 @@ describe("purchaseTickets",()=>{
         jest.restoreAllMocks();
     })
     test('return status 400 if no account id given to controller',()=>{
-       
+        const expectedObj={
+            success:false,
+            status: 400,
+            message: "no account id included"
+        }
         const mReq ={
             body: {
                 accountInfo:{
@@ -31,11 +35,15 @@ describe("purchaseTickets",()=>{
         
         purchaseTickets(mReq,mRes);
         expect(mRes.status).toHaveBeenCalledWith(400);
-        expect(mRes.send).toHaveBeenCalledWith("no account id included");
+        expect(mRes.json).toHaveBeenCalledWith(expectedObj)
         
     })
     test('return status 400 if no keys are found in the ticket object was given to controller',()=>{
-       
+        const expectedObj={
+            success:false,
+            status: 400,
+            message: "no tickets being purchased"
+        }
         const mReq ={
             body: {
                 accountInfo:{
@@ -52,11 +60,15 @@ describe("purchaseTickets",()=>{
         
         purchaseTickets(mReq,mRes);
         expect(mRes.status).toHaveBeenCalledWith(400);
-        expect(mRes.send).toHaveBeenCalledWith("no tickets being purchased")
+        expect(mRes.json).toHaveBeenCalledWith(expectedObj)
     })
 
     test('return status 400 if no ticket object was given to controller',()=>{
-       
+        const expectedObj={
+            success:false,
+            status: 400,
+            message: "no tickets being purchased"
+        }
         const mReq ={
             body: {
                 accountInfo:{
@@ -71,7 +83,7 @@ describe("purchaseTickets",()=>{
         
         purchaseTickets(mReq,mRes);
         expect(mRes.status).toHaveBeenCalledWith(400);
-        expect(mRes.send).toHaveBeenCalledWith("no tickets being purchased")
+        expect(mRes.json).toHaveBeenCalledWith(expectedObj)
     })
 
     test('return success object when a successful call to purchaseTickets has been made',()=>{
