@@ -20,7 +20,7 @@ app.use(router)
 
 app.listen(port, (error)=>{
     if(!error){
-        console.log(`app running on ${port}`)
+        console.log(`app running on localhost:${port}`)
     }else{
         console.log(error)
     }
