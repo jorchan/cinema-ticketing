@@ -17,7 +17,7 @@ To install the necessary packages within package.json run
 
 If the install was successful you should be able to run the following commands below
 ### Running unit tests
-To run unit tests using jest run:
+To run unit tests using jest run
 
     npm test
 
