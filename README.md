@@ -30,14 +30,14 @@ To run integration tests using supertest run
 To start the dev nodemon server run
 
     npm run dev
-you should see the below message saying what port the app is running printed in the console
+You should see the below message saying what port the app is running printed in the console
 
     app running on 3000
     
 ### Example expected POST request
-when posting to /tickets this is an example of the object the app expects.
+When posting to /tickets this is an example of the object the app expects.
 
-child and infant are optional for a successful call to the service, everything else is required.
+Child and infant are optional for a successful call to the service, everything else is required.
 ```
 {
   "accountInfo": {
@@ -51,7 +51,23 @@ child and infant are optional for a successful call to the service, everything e
 }
 ```
 ### Swagger file api doc
-the swagger api docs can be found at the path once the nodemon server is running
+The swagger api docs can be found at the path once the nodemon server is running
 
     /api-docs
+    
+### Building a docker image with the dockerfile
+Build a docker image with the following
+
+    docker build -t cinema-tickets
+    
+Check that the image has been created successfully with
+
+    docker image ls
+    
+Run the docker container with the command below. It will map the ports to 3000, this can be changed to anything
+    
+    docker run -p 3000:3000
+    
+The app should be available on the port specified now
+    
 
