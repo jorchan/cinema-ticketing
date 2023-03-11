@@ -85,10 +85,14 @@ export default class TicketService {
 
   ticketTypesPurchased(ticketTypeRequests){
     const ticketTypes = ticketTypeRequests.reduce((acc,curr)=>{ 
-      return{
-        ...acc,
-        [curr.getTicketType()]: curr.getNoOfTickets(),
-      };
+      if(curr.getNoOfTickets() === 0){
+        return acc
+      }else{
+        return{
+          ...acc,
+          [curr.getTicketType()]: curr.getNoOfTickets(),
+        };
+      }
     },{});
     return ticketTypes
   }

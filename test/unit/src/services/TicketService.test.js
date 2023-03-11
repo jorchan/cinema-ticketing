@@ -113,6 +113,20 @@ describe("TicketService", ()=>{
             expect(ticketService.purchaseTickets(1,arr)).toMatchObject(expectedObj)
         }) 
 
+        test('on success return an object with total price and seats reserved back, tickets sent with 0 should be removed from response object',() =>{
+            const ticketService = new TicketService();
+            const arr = [new TicketTypeRequest('ADULT', 2),new TicketTypeRequest('CHILD', 2), new TicketTypeRequest('INFANT', 0)]
+            const expectedObj={
+                totalPrice: 60,
+                totalSeatsReserved: 4,
+                ticketTypesPurchased: {
+                    ADULT:2,
+                    CHILD:2
+                }
+            }
+            expect(ticketService.purchaseTickets(1,arr)).toMatchObject(expectedObj)
+        }) 
+
     })
 
     describe("isAccountIdValid",() =>{
