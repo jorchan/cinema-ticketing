@@ -17,6 +17,7 @@ export const purchaseTickets = ((req,res)=>{
     const ticketsObj = req.body.tickets;
 
     if(!accountId){
+        console.log('no account id included')
         return res.status(400).json({
             success:false,
             status:400,
@@ -24,6 +25,7 @@ export const purchaseTickets = ((req,res)=>{
         })
     }
     if(!ticketsObj || Object.keys(ticketsObj).length === 0){
+        console.log('no tickets being purchased')
         return res.status(400).json({
             success:false,
             status:400,
@@ -42,6 +44,7 @@ export const purchaseTickets = ((req,res)=>{
         })
   
     }catch(err){
+        console.error('an internal server error occured')
         const status = err.status || 500
         const message = err.message || "unkown error occured"
         return res.status(500).json({

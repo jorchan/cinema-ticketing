@@ -25,6 +25,7 @@ export default class TicketService {
     try{
       ticketPaymentService.makePayment(accountId,totalPurchasePrice);
     }catch{
+      console.error('Internal error, payment failed')
       const error = new Error ('Internal error, payment failed')
       error.status = 500
       throw error
@@ -33,6 +34,7 @@ export default class TicketService {
     try{
       seatReservationService.reserveSeat(accountId,totalSeatsToReserve);
     }catch{
+      console.error('Internal error, seat reservation failed')
       const error = new Error ('Internal error, seat reservation failed')
       error.status = 500
       throw error
