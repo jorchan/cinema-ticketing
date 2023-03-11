@@ -10,9 +10,10 @@ A simple project to handle ticket purchase requests to be sent to third party AP
 - Supertest
 
 ### Install
+
 To install the necessary packages within package.json run
 
-npm install
+    npm install
 
 If the install was successful you should be able to run the following commands below
 ### Running unit tests
@@ -53,3 +54,4 @@ child and infant are optional for a successful call to the service, everything e
 the swagger api docs can be found at the path once the nodemon server is running
 
     /api-docs
+

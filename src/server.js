@@ -3,7 +3,7 @@ import router from "./index.js";
 import swaggerUi from 'swagger-ui-express'
 import YAML from "yamljs";
 
-const swaggerDocument = YAML.load('./swagger.yaml');
+const swaggerDocument = YAML.load('./swagger.yml');
 
 const app = express();
 const port = 3000;
